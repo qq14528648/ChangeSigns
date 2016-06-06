@@ -15,3 +15,14 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keepattributes Signature
+-keepattributes EnclosingMethod
+-keep class com.mark.changesigns.*
+
+-assumenosideeffects class android.util.Log {
+    public static *** v(...);
+    public static *** i(...);
+    public static *** d(...);
+    public static *** w(...);
+    public static *** e(...);
+}
