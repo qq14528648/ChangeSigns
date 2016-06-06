@@ -1,0 +1,166 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/saveTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_refresh_black_24dp"
+            android:ellipsize="start"
+            android:gravity="center_vertical"
+            android:padding="8dip"
+            android:layout_marginRight="16dip"
+            android:layout_marginLeft="8dip"
+            android:singleLine="true"
+            android:text="已备份存档"
+            android:textColor="#000"
+            android:textSize="12sp" />
+
+        <ListView
+
+            android:id="@+id/listView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#33ffffff"
+            android:fastScrollAlwaysVisible="true"
+            android:fastScrollEnabled="true"
+            android:scrollbars="none"></ListView>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+
+            <EditText
+                android:id="@+id/pkgEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dip"
+                android:focusable="true"
+                android:hint="游戏包名"
+                android:padding="8dip"
+                android:singleLine="true"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/save1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="存档文件1"
+                android:padding="8dip"
+                android:singleLine="true"
+                android:layout_margin="8dip"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/save2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="存档文件2"
+                android:padding="8dip"
+                android:singleLine="true"
+                android:layout_margin="8dip"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/save3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="存档文件3"
+                android:padding="8dip"
+                android:singleLine="true"
+                android:layout_margin="8dip"
+                android:textSize="16sp" />
+
+
+            <EditText
+                android:id="@+id/save4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="存档文件4"
+                android:padding="8dip"
+                android:singleLine="true"
+                android:layout_margin="8dip"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/saveLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="存档位置"
+                android:padding="8dip"
+                android:singleLine="true"
+                android:layout_margin="8dip"
+                android:textSize="16sp" />
+            <Button
+                android:id="@+id/saveNew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dip"
+                android:background="@drawable/button_green"
+                android:gravity="center"
+                android:hint="备份存档"
+                android:textSize="16sp" />
+
+
+            <TextView
+
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="13dip"
+                android:text="当前登录帐号："
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/accountTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="13dip"
+                android:text="大小姐"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dip"
+                android:background="@drawable/button_yellow"
+                android:gravity="center"
+                android:text="登录游戏"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
