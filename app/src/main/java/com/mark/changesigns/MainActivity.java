@@ -123,15 +123,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
     };
     private long exitTime;
 
-    public static void chmod(String permission, String apkpath) {
-        try {
-            String command = "chmod " + permission + " " + apkpath;
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static String getFileNameNoEx(String filename) {
         if ((filename != null) && (filename.length() > 0)) {
@@ -198,6 +189,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 mSharedPreferences.edit().putString("pkg", s.toString().trim()).commit();
+                new ExecuteAsRoot("data/data/" +  s.toString().trim() ).execute();
 
 
             }
@@ -215,7 +207,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                     return;
                 File f = new File(MainActivity.this.save1.getText().toString().trim());
 
-
+//boolean b=f.exists();
                 if (f == null || !f.exists()) {
 
 
@@ -223,7 +215,10 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                             "存档1不存在存档文件", Toast.LENGTH_LONG).show();
                     return;
                 }
-                new ExecuteAsRoot().execute();
+
+
+                new ExecuteAsRoot(f.getAbsolutePath()).execute();
+
 
 
             }
@@ -251,6 +246,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
         this.save2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+
                 if (hasFocus)
                     return;
                 File f = new File(MainActivity.this.save2.getText().toString().trim());
@@ -261,6 +257,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                             "存档2不存在存档文件", Toast.LENGTH_LONG).show();
                     return;
                 }
+                new ExecuteAsRoot(f.getAbsolutePath()).execute();
 
 
             }
@@ -299,7 +296,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                             "存档3不存在存档文件", Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                new ExecuteAsRoot(f.getAbsolutePath()).execute();
 
             }
         });
@@ -336,7 +333,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                             "存档4不存在存档文件", Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                new ExecuteAsRoot(f.getAbsolutePath()).execute();
 
 
             }
@@ -373,7 +370,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                             "此目录不存在存档文件", Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                new ExecuteAsRoot(f.getAbsolutePath()).execute();
 //                if (!f.canExecute() || !f.canRead() || !f.canWrite()) {
 //                    Toast.makeText(MainActivity.this, "操作此存档文件缺少权限", Toast.LENGTH_LONG).show();
 //                }
@@ -589,7 +586,10 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                 File file2 = new File(save2.getText().toString().trim());
                 File file3 = new File(save3.getText().toString().trim());
                 File file4 = new File(save4.getText().toString().trim());
+
+
                 if (file1 != null && file1.exists()) {
+
                     replaceSaveDatas(arg2, save1.getText().toString().trim());
 
                 } else {
@@ -764,7 +764,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                                 if (re) {
                                     mXListAdapter.remove(account);
                                     mXListAdapter.add(newN);
-
+                                    accounts.remove(account);
                                     accounts.add(newN);
                                     mXListAdapter.notifyDataSetChanged();
                                     ToastUtils.make(MainActivity.this, "修改存档名字成功");
@@ -835,14 +835,14 @@ public class MainActivity extends BaseActivity implements OnClickListener,
             @Override
             public void run() {
 
-                new ExecuteAsRoot().execute();
+
                 try {
                     byte[] buffer = new byte[4 * 1024];
                     File file = new File(save1Path);
                     String save = saveLocation.getText().toString().trim() + "/" + mXListAdapter
                             .getItem(position) + file.getName();
 
-
+                    new ExecuteAsRoot(save).execute();
                     FileInputStream is = new FileInputStream(new File(save));
 
                     file.setExecutable(true);
@@ -887,7 +887,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
             @Override
             public void run() {
 
-                new ExecuteAsRoot().execute();
+               //
                 try {// BufferedWriter
                     byte[] buffer = new byte[4 * 1024];
 
@@ -895,7 +895,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                     file.setExecutable(true);
                     file.setWritable(true);
                     file.setReadable(true);
-                    if (file.canRead()) {
+                    //if (file.canRead()) {
+                    new ExecuteAsRoot(file.getAbsolutePath()).execute();
                         FileInputStream is = new FileInputStream(file);
 
                         int len;
@@ -916,9 +917,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                             mHandler.obtainMessage(MSG_BACKUP_SAVE, account)
                                     .sendToTarget();
                         }
-                    }else{
-                        ToastUtils.make(MainActivity.this, "存档文件读取失败");
-                    }
+//                    }else{
+//                        ToastUtils.make(MainActivity.this, "存档文件读取失败");
+//                    }
 
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch
@@ -976,12 +977,18 @@ public class MainActivity extends BaseActivity implements OnClickListener,
     // ///////////////初始化程序时使用////////////////////////////////////
     public class ExecuteAsRoot extends AExecuteAsRoot {
 
+        private String file;
+
+        public ExecuteAsRoot(String file) {
+            this.file = file;
+        }
+
         @Override
         protected ArrayList<String> getCommandsToExecute() {
             ArrayList<String> list = new ArrayList<String>();
             list.add("add kill-server");
-            list.add("chmod 777 " + "data/data/" + pkg + "/shared_prefs/" + pkg
-                    + ".xml");
+            
+            list.add("chmod 777 " + file);
             return list;
         }
     }
@@ -1037,7 +1044,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
         return super.onCreateOptionsMenu(menu);
     }
 
-    private List<String> accounts = new ArrayList<String>();
+     private List<String> accounts = new ArrayList<String>();
 
     @Override
     @TargetApi(11)
@@ -1070,4 +1077,5 @@ public class MainActivity extends BaseActivity implements OnClickListener,
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }
