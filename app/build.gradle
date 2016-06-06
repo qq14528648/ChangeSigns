@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 def releaseTime() {
-    return new Date().format("HHmm", TimeZone.getTimeZone("GMT+8:00"))
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+8:00"))
 }
-def vCode() {
-    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
-}
+//def vCode() {
+//    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+//}
 
 android {
     compileSdkVersion 23
@@ -15,7 +15,7 @@ android {
         applicationId "com.mark.changesigns"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode Integer.valueOf(vCode())
+        versionCode 3
         versionName "1.1"
     }
 
