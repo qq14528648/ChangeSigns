@@ -937,8 +937,13 @@ mHandler.   postDelayed(new Runnable() {
                         FileInputStream is = new FileInputStream(file);
 
                         int len;
+
+                     new File(saveLocation.getText().toString().trim()).mkdirs();
                         File saveFile = new File(saveLocation.getText().toString().trim() + "/" + account+file.getName());
+
+
                         if (saveFile != null && !saveFile.exists())
+
                             saveFile.createNewFile();
                         FileOutputStream os = new FileOutputStream(saveFile);
 
