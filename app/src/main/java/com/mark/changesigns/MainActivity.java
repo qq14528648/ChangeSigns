@@ -78,6 +78,11 @@ public class MainActivity extends BaseActivity implements OnClickListener,
     private TextView accountTextView;
     @ViewInject(R.id.loginButton)
     private Button loginButton;
+
+    @ViewInject(R.id.delButton)
+    private Button delButton;
+
+
     private String pkg = DEF_PKG;
     private SharedPreferences mSharedPreferences;
     private XListAdapter mXListAdapter;
@@ -101,7 +106,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                             activityManager.killBackgroundProcesses(pkg);
                             Utils.doStartApplicationWithPackageName(MainActivity.this, pkg);
                         }
-                    }, 1000);
+                    }, 800);
                     break;
 
                 case MSG_BACKUP_SAVE:
@@ -116,6 +121,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                     break;
             }
             saveTextView.setText("已备份存档数:" + mXListAdapter.getCount());
+
 
         }
 
@@ -163,10 +169,10 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 
 
         pkg = mSharedPreferences.getString("pkg", DEF_PKG);
-        String save1 = mSharedPreferences.getString("save1", "");
-        String save2 = mSharedPreferences.getString("save2", "");
-        String save3 = mSharedPreferences.getString("save3", "");
-        String save4 = mSharedPreferences.getString("save4", "");
+       final  String save1 = mSharedPreferences.getString("save1", "");
+        final   String save2 = mSharedPreferences.getString("save2", "");
+        final   String save3 = mSharedPreferences.getString("save3", "");
+        final   String save4 = mSharedPreferences.getString("save4", "");
 
         String saveLocation = mSharedPreferences.getString("saveLocation", "/mnt/sdcard");
 
@@ -178,7 +184,38 @@ public class MainActivity extends BaseActivity implements OnClickListener,
         this.save4.setText(save4);
         pkgEditText.setText(pkg);
 
+        delButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File f1=new File(save1);
+                if (f1!=null&&f1.isFile())
+                    f1.delete();
+              //  Toast.makeText(MainActivity.this.删除结果)
 
+                File f2=new File(save2);
+
+                if (f2!=null&&f2.isFile())
+                    f2.delete();
+
+                File f3=new File(save3);
+                if (f3!=null&&f3.isFile())
+                    f3.delete();
+
+                File f4=new File(save4);
+                if (f4!=null&&f4.isFile())
+                    f4.delete();
+mHandler.   postDelayed(new Runnable() {
+    @Override
+    public void run() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        activityManager.killBackgroundProcesses(pkg);
+        Utils.doStartApplicationWithPackageName(MainActivity.this, pkg);
+    }
+}, 800);
+
+
+            }
+        });
         pkgEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
