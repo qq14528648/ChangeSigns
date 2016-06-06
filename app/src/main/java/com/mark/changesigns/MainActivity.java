@@ -894,6 +894,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                     File file = new File(save);
                     file.setExecutable(true);
                     file.setWritable(true);
+                    file.setReadable(true);
                     if (file.canRead()) {
                         FileInputStream is = new FileInputStream(file);
 
@@ -915,6 +916,8 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                             mHandler.obtainMessage(MSG_BACKUP_SAVE, account)
                                     .sendToTarget();
                         }
+                    }else{
+                        ToastUtils.make(MainActivity.this, "存档文件读取失败");
                     }
 
                 } catch (FileNotFoundException e) {
