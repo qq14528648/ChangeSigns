@@ -197,7 +197,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                mSharedPreferences.edit().putString("pkg", s.toString().trim());
+                mSharedPreferences.edit().putString("pkg", s.toString().trim()).commit();
 
 
             }
@@ -238,7 +238,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 mSharedPreferences.edit().putString("save1", s.toString().trim()).commit();
-
+                setFromSaveGetNameString();
 
             }
 
@@ -275,7 +275,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mSharedPreferences.edit().putString("save2", s.toString().trim()).commit();
-
+                setFromSaveGetNameString();
 
             }
 
@@ -288,6 +288,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
         this.save3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+
                 if (hasFocus)
                     return;
                 File f = new File(MainActivity.this.save3.getText().toString().trim());
@@ -310,7 +311,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                setFromSaveGetNameString();
                 mSharedPreferences.edit().putString("save3", s.toString().trim()).commit();
 
             }
@@ -326,6 +327,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus)
                     return;
+
                 File f = new File(MainActivity.this.save4.getText().toString().trim());
                 if (f == null || !f.exists()) {
 
@@ -347,7 +349,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                setFromSaveGetNameString();
                 mSharedPreferences.edit().putString("save4", s.toString().trim()).commit();
 
             }
@@ -386,7 +388,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                setFromSaveGetNameString();
                 mSharedPreferences.edit().putString("saveLocation", s.toString().trim()).commit();
 //                Toast.makeText(MainActivity.this,
 //                        "设置备份位置成功", Toast.LENGTH_LONG).show();
@@ -406,6 +408,17 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 
         accountTextView.setText(mSharedPreferences.getString("account", "？"));
 
+        setFromSaveGetNameString();
+
+        // mXListAdapter.removeAll();
+
+        initSaveDatas(this.saveLocation.getText().toString().trim());
+        saveTextView.setOnClickListener(this);
+        loginButton.setOnClickListener(this);
+        saveNew.setOnClickListener(this);
+    }
+
+    private void setFromSaveGetNameString() {
         File file1 = new File(this.save1.getText().toString().trim());
         File file2 = new File(this.save2.getText().toString().trim());
         File file3 = new File(this.save3.getText().toString().trim());
@@ -422,13 +435,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
         if (file4 != null && file4.getName().length() > fromSaveGetNameString.length()) {
             fromSaveGetNameString = file4.getName();
         }
-
-        // mXListAdapter.removeAll();
-
-        initSaveDatas(this.saveLocation.getText().toString().trim());
-        saveTextView.setOnClickListener(this);
-        loginButton.setOnClickListener(this);
-        saveNew.setOnClickListener(this);
     }
 
     // STOPSHIP: 2016/06/03
@@ -905,7 +911,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
                         // os.flush();
                         is.close();
                         os.close();
-                        if (!TextUtils.isEmpty(fromSaveGetNameString)&&fromSaveGetNameString.contains(file.getName())) {
+                        if (!TextUtils.isEmpty(fromSaveGetNameString)&&file.getName().contains(fromSaveGetNameString)) {
                             mHandler.obtainMessage(MSG_BACKUP_SAVE, account)
                                     .sendToTarget();
                         }
