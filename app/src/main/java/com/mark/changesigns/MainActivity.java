@@ -149,8 +149,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
            getSupportActionBar().setLogo(R.mipmap.ic_launcher);
-        //   getSupportActionBar().setIcon(R.mipmap.ic_launcher);
-      //  getSupportActionBar().setLogo();
+
         try {
             ViewConfiguration mconfig = ViewConfiguration.get(this);
             Field menuKeyField = ViewConfiguration.class
